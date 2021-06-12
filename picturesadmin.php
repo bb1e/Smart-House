@@ -42,39 +42,46 @@ session_start();
     </div>
     <ul class="nav_list">
       <li>
-        <a href="dashboard.php">
+        <a href="dashadmin.php">
           <i class='bx bx-grid-alt' ></i>
           <span class="links_name">Dashboard</span>
         </a>
         <span class="tooltip">Dashboard</span>
       </li>
       <li>
-        <a href="smartobjects.php">
+        <a href="smartobjectsadmin.php">
           <i class='bx bx-coffee'></i>
           <span class="links_name">Smart Objects</span>
         </a>
 		<span class="tooltip">Smart Objects</span>
       </li>
       <li>
-        <a href="history.php">
+        <a href="historyadmin.php">
           <i class='bx bx-archive-in' ></i>
           <span class="links_name">History</span>
         </a>
 		<span class="tooltip">History</span>
       </li>
       <li>
-        <a href="analytics.php">
+        <a href="analyticsadmin.php">
           <i class='bx bx-pie-chart-alt-2' ></i>
           <span class="links_name">Analytics</span>
         </a>
 		<span class="tooltip">Analytics</span>
       </li>
 	  <li>
-        <a href="pictures.php">
+        <a href="picturesadmin.php">
           <i class='bx bx-photo-album'></i>
           <span class="links_name">Pictures</span>
         </a>
 		<span class="tooltip">Pictures</span>
+      </li>
+	  <li>
+        <a href="adminspace.php">
+          <i class='bx bx-user'></i>
+          <span class="links_name">Admin Space</span>
+        </a>
+		<span class="tooltip">Admin Space</span>
       </li>
     </ul>
       <div class="logout">

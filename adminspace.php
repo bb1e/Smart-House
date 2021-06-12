@@ -42,39 +42,46 @@ session_start();
     </div>
     <ul class="nav_list">
       <li>
-        <a href="dashboard.php">
+        <a href="dashadmin.php">
           <i class='bx bx-grid-alt' ></i>
           <span class="links_name">Dashboard</span>
         </a>
         <span class="tooltip">Dashboard</span>
       </li>
       <li>
-        <a href="smartobjects.php">
+        <a href="smartobjectsadmin.php">
           <i class='bx bx-coffee'></i>
           <span class="links_name">Smart Objects</span>
         </a>
 		<span class="tooltip">Smart Objects</span>
       </li>
       <li>
-        <a href="history.php">
+        <a href="historyadmin.php">
           <i class='bx bx-archive-in' ></i>
           <span class="links_name">History</span>
         </a>
 		<span class="tooltip">History</span>
       </li>
       <li>
-        <a href="analytics.php">
+        <a href="analyticsadmin.php">
           <i class='bx bx-pie-chart-alt-2' ></i>
           <span class="links_name">Analytics</span>
         </a>
 		<span class="tooltip">Analytics</span>
       </li>
 	  <li>
-        <a href="pictures.php">
+        <a href="picturesadmin.php">
           <i class='bx bx-photo-album'></i>
           <span class="links_name">Pictures</span>
         </a>
 		<span class="tooltip">Pictures</span>
+      </li>
+	  <li>
+        <a href="adminspace.php">
+          <i class='bx bx-user'></i>
+          <span class="links_name">Admin Space</span>
+        </a>
+		<span class="tooltip">Admin Space</span>
       </li>
     </ul>
       <div class="logout">
@@ -88,7 +95,7 @@ session_start();
   </div>
 	<!-- fim da sidebar -->
   
-	<div class="home_content">
+<div class="home_content">
     <div class="row">
 		<div class="col-sm-12">
 			<video autoplay loop>  
@@ -97,63 +104,11 @@ session_start();
 		</div>
     </div>  
 	<br><br>
-		<!--### foto ##-->
-	<div class="container">
-	<div class="row">
-			<div class="col-sm-7">
-				<div class="card text-center cardcolor">
-					<div class="card-header">Last Picture</div>
-					<div class="card-body"><img src="imgs/webcam.png" alt="web image" width="350px">
-						<br><b>
-								Batata: 
-									<?php 
-										$filename = 'imgs/webcam.jpg';
-										if (file_exists($filename)) {
-									
-											echo "<a> was last modified: </a>" . date ("F d Y H:i:s.", filemtime($filename));
-										}
-									?>
-							</b>
-					</div>
-                </div>
-				
-			</div>
-			
-			<!-- aqui é o botão q vai servir para tirar uma ft
-				vai ter q ser usado python e a ft vai ser guardad normal
-				como a do retângulo grande e tem q se mandar tb para a base
-				de dados para dps ser apresentada no histórico -->
-			<form method="post" >
-			<div class="col-sm-5">
-				<button type="submit" name="take" class="btn btn-outline-info"><i class='bx bxs-camera'></i></button>
-			</div>
-			</form>
-	</div>
-	<br><br>
 	
-	<!--#### HISTÓRICO DE IMAGENS!!! ###-->
-	<div class="row">
-		<div class="col-sm-12">
-				<div class="card text-center cardcolor">
-					<div class="card-header">Picture History</div>
-					<div class="card-body">
-					<?php
-						//vai buscar as imagens guardadas na base de dados
-						$sql = "SELECT * FROM images;";
-						$res = mysqli_query($con,$sql);
-						while ($row = mysqli_fetch_array($res))
-						{
-							echo '<img src="data:image/jpeg;base64,'.base64_encode($row['imagem']).'" width="200px"/>';
-						}
-					?>
-					</div>
-				</div>
-				<br>
-		</div>
-	</div>
-	</div>
 	
-	</div>
+	
+	
+</div>
 	
 	
 	<script>

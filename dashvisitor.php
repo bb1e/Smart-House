@@ -1,5 +1,6 @@
 <?php
 //verificacao se existe um usuario logado
+
 session_start();
 
 	include("connection.php");
@@ -97,39 +98,18 @@ session_start();
     </div>
     <ul class="nav_list">
       <li>
-        <a href="dashboard.php">
+        <a href="dashvisitor.php">
           <i class='bx bx-grid-alt' ></i>
           <span class="links_name">Dashboard</span>
         </a>
         <span class="tooltip">Dashboard</span>
       </li>
       <li>
-        <a href="smartobjects.php">
-          <i class='bx bx-coffee'></i>
-          <span class="links_name">Smart Objects</span>
-        </a>
-		<span class="tooltip">Smart Objects</span>
-      </li>
-      <li>
-        <a href="history.php">
-          <i class='bx bx-archive-in' ></i>
-          <span class="links_name">History</span>
-        </a>
-		<span class="tooltip">History</span>
-      </li>
-      <li>
-        <a href="analytics.php">
+        <a href="analyticsvisitor.php">
           <i class='bx bx-pie-chart-alt-2' ></i>
           <span class="links_name">Analytics</span>
         </a>
 		<span class="tooltip">Analytics</span>
-      </li>
-	  <li>
-        <a href="pictures.php">
-          <i class='bx bx-photo-album'></i>
-          <span class="links_name">Pictures</span>
-        </a>
-		<span class="tooltip">Pictures</span>
       </li>
     </ul>
       <div class="logout">
@@ -165,7 +145,7 @@ session_start();
 				<br><br>
                 <div class="card text-center cardcolor">
                     <div class="card-body"><img src="imgs/tempicon.png" alt="temperature image" class="icons">
-					<br><b>Temperature: <?php echo $value_temp; ?>º</b>
+					<br><b>Temperature: <?php echo $value_temp; ?>ยบ</b>
 					</div>
 					
                 </div>	
@@ -265,7 +245,7 @@ session_start();
                             <tbody>
                               <tr class="textcolor">
                               <td>Temperature</td>
-                                <td><?php echo $value_temp; ?>º</td>
+                                <td><?php echo $value_temp; ?>ยบ</td>
                                 <td><?php echo $date_temp; ?></td>
                                 <td><span class="badge badge-pill badge-info"><?php echo $temp_warn ?></span></td>
                               </tr>
@@ -302,7 +282,6 @@ session_start();
     </div>
 	</div>
 	
-	
 	<script>
 	//script para deixar a sidebar interativa
 	
@@ -320,21 +299,6 @@ session_start();
 
 	</script>
 	
-	<script>
-	//tentativa de c?digo ajax mas fds n?o est? a funcionar
-	
-        setInterval(function() {
-            
-        }, 2000);
-    
-	</script>
-	<script>
-		function updateDiv()
-		{ 
-			$( "#main" ).load(dashvalues.php + " #main" );
-		} }, 1000);
-		$("#main").load(" #main");
-	</script>
 	
 	<script src="calendar.js"></script>
 

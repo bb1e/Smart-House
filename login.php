@@ -28,11 +28,23 @@ session_start();
 					
 					/*verifica se a password digitada é igual ao código 
 					  encriptado q está na base de dados*/
-					if(password_verify($password, $user_data['password']))
+					if(password_verify($password, $user_data['password']) && $user_data['privileges'] == "user")
 					{
 
 						$_SESSION['user_id'] = $user_data['user_id'];
 						header("Location: dashboard.php");
+						die;
+					
+					}else if(password_verify($password, $user_data['password']) && $user_data['privileges'] == "visitor")
+					{
+						$_SESSION['user_id'] = $user_data['user_id'];
+						header("Location: dashvisitor.php");
+						die;
+					
+					}else if(password_verify($password, $user_data['password']) && $user_data['privileges'] == "admin")
+					{
+						$_SESSION['user_id'] = $user_data['user_id'];
+						header("Location: dashadmin.php");
 						die;
 						
 					}else{
