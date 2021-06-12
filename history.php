@@ -13,18 +13,69 @@ session_start();
 	$lines = file('api/files/humidity/log.txt');
     $flipped = array_reverse($lines); // Reverte o array(1º linha passa a ser a ultima)
     $keep = array_slice($flipped,0, 5); //  mantem as primeiras 5 linhas
-    $log_humi= implode("\n", $keep);
+	file_put_contents("api/files/humidity/log.txt", $keep);
     
     $lines1 = file('api/files/temperature/log.txt');
     $flipped1 = array_reverse($lines1);
     $keep1 = array_slice($flipped1,0, 5); 
-    $log_temp= implode("\n", $keep1);
+	file_put_contents("api/files/temperature/log.txt", $keep1);
     
     $lines2 = file('api/files/luminosity/log.txt');
     $flipped2 = array_reverse($lines2); 
     $keep2 = array_slice($flipped2,0, 5); 
-    $log_lumi= implode("\n", $keep2);
-
+    file_put_contents("api/files/luminosity/log.txt", $keep2);
+	
+	
+	
+	$file = fopen( "api/files/temperature/log.txt", "r" );
+		$index=-1;
+		$arrayValue=[];
+		$arrayHour=[];
+		while ((( $line = fgets( $file )) !== false) && ( $index++ < 10 )) {
+			$piecesValue = explode(";", $line);
+			
+			
+			$piecesHourAux = explode(";", $line);
+			$piecesHour = explode(" ", $piecesHourAux[0]);
+			
+			$arrayValue[$index]=$piecesValue[1];
+			$arrayHour[$index]=$piecesHour[1];
+		}
+	fclose( $file );
+	
+	$file1 = fopen( "api/files/humidity/log.txt", "r" );
+		$index1=-1;
+		$arrayValue1=[];
+		$arrayHour1=[];
+		while ((( $line1 = fgets( $file1 )) !== false) && ( $index1++ < 10 )) {
+			$piecesValue1 = explode(";", $line1);
+			
+			
+			$piecesHourAux1 = explode(";", $line1);
+			$piecesHour1 = explode(" ", $piecesHourAux1[0]);
+			
+			$arrayValue1[$index1]=$piecesValue1[1];
+			$arrayHour1[$index1]=$piecesHour1[1];
+		}
+	fclose( $file1 );	
+	
+	$file2 = fopen( "api/files/luminosity/log.txt", "r" );
+		$index2=-1;
+		$arrayValue2=[];
+		$arrayHour2=[];
+		while ((( $line2 = fgets( $file2 )) !== false) && ( $index2++ < 10 )) {
+			$piecesValue2 = explode(";", $line2);
+			
+			
+			$piecesHourAux2 = explode(";", $line2);
+			$piecesHour2 = explode(" ", $piecesHourAux2[0]);
+			
+			$arrayValue2[$index2]=$piecesValue2[1];
+			$arrayHour2[$index2]=$piecesHour2[1];
+		}
+	fclose( $file2 );
+	
+	
 ?>
 
 <!DOCTYPE html>
@@ -116,10 +167,37 @@ session_start();
 				<div class="card text-center cardcolor">
 					<div class="card-header">
 						<b>Temperature</b>
-						<p>(date hour=>valueº)</p>
 					</div>
 					<div class="card-body">
-					<?php echo nl2br($log_temp); ?> <!--apresenta linha a linha-->
+					<!--apresenta linha a linha-->
+					<table class="table table-bordered">
+						<tbody>
+                              <tr class="textcolor">
+                                <td>DATE</td>
+                                <td>VALUE</td>
+                              </tr>
+                              <tr class="textcolor">
+                                <td><?php echo $arrayHour[0]; ?></td>
+                                <td><?php echo $arrayValue[0]; ?>º</td>
+                              </tr>
+							  <tr class="textcolor">
+                                <td><?php echo $arrayHour[1]; ?></td>
+                                <td><?php echo $arrayValue[1]; ?>º</td>
+                              </tr>
+							  <tr class="textcolor">
+                                <td><?php echo $arrayHour[2]; ?></td>
+                                <td><?php echo $arrayValue[2]; ?>º</td>
+                              </tr>
+							  <tr class="textcolor">
+                                <td><?php echo $arrayHour[3]; ?></td>
+                                <td><?php echo $arrayValue[3]; ?>º</td>
+                              </tr>
+							  <tr class="textcolor">
+                                <td><?php echo $arrayHour[4]; ?></td>
+                                <td><?php echo $arrayValue[4]; ?>º</td>
+                              </tr>
+						</tbody>
+					</table>
 					</div>
 				</div>
 			</div>
@@ -127,10 +205,36 @@ session_start();
 				<div class="card text-center cardcolor">
 					<div class="card-header">
 						<b>Luminosity</b>
-						<p>(date hour=>value%)</p>
 					</div>
 					<div class="card-body">
-					<?php echo nl2br($log_lumi); ?>
+					<table class="table table-bordered">
+						<tbody>
+                              <tr class="textcolor">
+                                <td>DATE</td>
+                                <td>VALUE</td>
+                              </tr>
+                              <tr class="textcolor">
+                                <td><?php echo $arrayHour2[0]; ?></td>
+                                <td><?php echo $arrayValue2[0]; ?>%</td>
+                              </tr>
+							  <tr class="textcolor">
+                                <td><?php echo $arrayHour2[1]; ?></td>
+                                <td><?php echo $arrayValue2[1]; ?>%</td>
+                              </tr>
+							  <tr class="textcolor">
+                                <td><?php echo $arrayHour2[2]; ?></td>
+                                <td><?php echo $arrayValue2[2]; ?>%</td>
+                              </tr>
+							  <tr class="textcolor">
+                                <td><?php echo $arrayHour2[3]; ?></td>
+                                <td><?php echo $arrayValue2[3]; ?>%</td>
+                              </tr>
+							  <tr class="textcolor">
+                                <td><?php echo $arrayHour2[4]; ?></td>
+                                <td><?php echo $arrayValue2[4]; ?>%</td>
+                              </tr>
+						</tbody>
+					</table>
 					</div>
 				</div>
 			</div>
@@ -138,10 +242,36 @@ session_start();
 				<div class="card text-center cardcolor">
 					<div class="card-header">
 						<b>Humidity</b>
-						<p>(date hour=>value%)</p>
 					</div>
 					<div class="card-body">
-					<?php echo nl2br($log_humi); ?>
+					<table class="table table-bordered">
+						<tbody>
+                              <tr class="textcolor">
+                                <td>DATE</td>
+                                <td>VALUE</td>
+                              </tr>
+                              <tr class="textcolor">
+                                <td><?php echo $arrayHour1[0]; ?></td>
+                                <td><?php echo $arrayValue1[0]; ?>%</td>
+                              </tr>
+							  <tr class="textcolor">
+                                <td><?php echo $arrayHour1[1]; ?></td>
+                                <td><?php echo $arrayValue1[1]; ?>%</td>
+                              </tr>
+							  <tr class="textcolor">
+                                <td><?php echo $arrayHour1[2]; ?></td>
+                                <td><?php echo $arrayValue1[2]; ?>%</td>
+                              </tr>
+							  <tr class="textcolor">
+                                <td><?php echo $arrayHour1[3]; ?></td>
+                                <td><?php echo $arrayValue1[3]; ?>%</td>
+                              </tr>
+							  <tr class="textcolor">
+                                <td><?php echo $arrayHour1[4]; ?></td>
+                                <td><?php echo $arrayValue1[4]; ?>%</td>
+                              </tr>
+						</tbody>
+					</table>
 					</div>
 				</div>
 			</div>

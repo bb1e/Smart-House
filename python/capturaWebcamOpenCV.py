@@ -20,7 +20,7 @@ def get_from_api():
 try:
     x= get_from_api()
     while True:
-        if(x > 10):
+        if(x > 3):
             camera = cv.VideoCapture(0, cv.CAP_DSHOW)
             ret, image = camera.read()
             print("Camera Ligada,Resultado da camera ="+str(ret))

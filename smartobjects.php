@@ -11,7 +11,7 @@ session_start();
 
 
 <?php
-
+	//get valores
 	$value_coffee = file_get_contents("api/files/coffee/value.txt");
 	$value_ac = file_get_contents("api/files/ac/value.txt");
 	$value_heater = file_get_contents("api/files/heater/value.txt");

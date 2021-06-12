@@ -1,5 +1,5 @@
 <?php
-//verifica??o se existe um usu?rio logado
+//verificacao se existe um usuario logado
 session_start();
 
 	include("connection.php");
@@ -9,7 +9,9 @@ session_start();
 ?>
 
 <?php
-	$value_temp = file_get_contents("api/files/temperature/value.txt");
+
+	//get valores
+  $value_temp = file_get_contents("api/files/temperature/value.txt");
   $date_temp = file_get_contents("api/files/temperature/date.txt");
   
   $value_lumi = file_get_contents("api/files/luminosity/value.txt");
@@ -25,7 +27,7 @@ session_start();
   $date_lamp = file_get_contents("api/files/lamp/date.txt");
   
   
-	//qualifica??o da badges da tabela de sensores
+	//qualificacao da badges da tabela de sensores
 	if($value_temp > 35){
 	  $temp_warn = "very hot";
 	}
@@ -151,6 +153,7 @@ session_start();
 	<br><br>
 
     <div id="main" class="container">
+	<?php include("dashvalues.php"); ?>
         <div class="row">
 			<div class="col-sm-4">
                 <div class="card text-center cardcolor">
@@ -176,7 +179,7 @@ session_start();
 							echo '<img src="imgs/closeddooricon.png" alt="door image" class="icons">';
 						}
 					?>
-					<br><b>Door: <?php //mudan?a de texto
+					<br><b>Door: <?php //mudanca de texto
 									if($value_door == 0){
 										echo "Closed";	
 									}elseif($value_door == 1){
@@ -233,7 +236,7 @@ session_start();
 						<div class="calendar-days"></div>
 					</div>
 						<div class="month-list"></div>
-						<br>
+						<br><br><br>
 					</div>
 			</div>
 			</div>
@@ -306,11 +309,18 @@ session_start();
 	
 	<script>
 	//tentativa de c?digo ajax mas fds n?o est? a funcionar
-	$(document).ready(function(){
+	
         setInterval(function() {
-            $("#main").load("dashvalues.php");
+            
         }, 2000);
-    })
+    
+	</script>
+	<script>
+		function updateDiv()
+		{ 
+			$( "#main" ).load(dashvalues.php + " #main" );
+		} }, 1000);
+		$("#main").load(" #main");
 	</script>
 	
 	<script src="calendar.js"></script>

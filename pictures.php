@@ -8,6 +8,15 @@ session_start();
 
 ?>
 
+<?php
+	if (isset($_POST['take']))
+	{
+		exec("python capturaWebcamOpenCV.py");
+	}
+	
+	exec("python capturaWebcamOpenCV.py");
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -93,7 +102,7 @@ session_start();
 			<div class="col-sm-7">
 				<div class="card text-center cardcolor">
 					<div class="card-header">Last Picture</div>
-					<div class="card-body"><img src="imgs/batata.png" alt="web image" width="350px">
+					<div class="card-body"><img src="imgs/webcam.png" alt="web image" width="350px">
 						<br><b>
 								Batata: 
 									<?php 
@@ -113,9 +122,11 @@ session_start();
 				vai ter q ser usado python e a ft vai ser guardad normal
 				como a do retângulo grande e tem q se mandar tb para a base
 				de dados para dps ser apresentada no histórico -->
+			<form method="post" >
 			<div class="col-sm-5">
-				<button type="button" class="btn btn-outline-info"><i class='bx bxs-camera'></i></button>
+				<button type="submit" name="take" class="btn btn-outline-info"><i class='bx bxs-camera'></i></button>
 			</div>
+			</form>
 	</div>
 	<br><br>
 	
