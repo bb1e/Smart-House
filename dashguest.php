@@ -1,14 +1,16 @@
 <?php
 //verificacao se existe um usuario logado
+
 session_start();
 
 	include("connection.php");
 	include("functions.php");
 	$user_data = check_login($con);
-	//acesso apenas ao privilégio admin
-	if($user_data['privileges'] != "admin"){
+	//acesso apenas ao privilégio guest
+	if($user_data['privileges'] != "guest"){
 		die("acess denied");
 	}
+
 ?>
 
 <?php
@@ -113,6 +115,7 @@ session_start();
 ?>
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -137,52 +140,24 @@ session_start();
 		</div>
 		<ul class="nav_list">
 		<li>
-			<a href="dashadmin.php">
+			<a href="dashguest.php">
 				<i class='bx bx-grid-alt' ></i>
 				<span class="links_name">Dashboard</span>
 			</a>
 			<span class="tooltip">Dashboard</span>
 		</li>
 		<li>
-			<a href="smartobjectsadmin.php">
-				<i class='bx bx-coffee'></i>
-				<span class="links_name">Smart Objects</span>
-			</a>
-			<span class="tooltip">Smart Objects</span>
-		</li>
-		<li>
-			<a href="historyadmin.php">
-				<i class='bx bx-archive-in' ></i>
-				<span class="links_name">History</span>
-			</a>
-			<span class="tooltip">History</span>
-		</li>
-		<li>
-			<a href="analyticsadmin.php">
+			<a href="analyticsguest.php">
 				<i class='bx bx-pie-chart-alt-2' ></i>
 				<span class="links_name">Analytics</span>
 			</a>
 			<span class="tooltip">Analytics</span>
 		</li>
-		<li>
-			<a href="picturesadmin.php">
-				<i class='bx bx-photo-album'></i>
-				<span class="links_name">Pictures</span>
-			</a>
-			<span class="tooltip">Pictures</span>
-		</li>
-		<li>
-			<a href="adminspace.php">
-				<i class='bx bx-user'></i>
-				<span class="links_name">Admin Space</span>
-			</a>
-			<span class="tooltip">Admin Space</span>
-		</li>
 		</ul>
 		<div class="logout">
 			<div>
 				<a href="logout.php">
-				<i class='bx bx-log-out' id="log_out" ></i>
+					<i class='bx bx-log-out' id="log_out" ></i>
 				</a>
 				<span class="tooltip">Logout</span>
 			</div>
@@ -190,7 +165,7 @@ session_start();
 	</div>
 	<!-- fim da sidebar -->
 	
-					<!-- ########## conteudo da pagina ######## -->
+						<!-- ########## conteudo da pagina ######## -->
   
 	<div class="home_content">
 	
@@ -376,7 +351,7 @@ session_start();
 	}
 
 	</script>
-
+	
 	
 	<script src="calendar.js"></script>
 	<script src="http://code.jquery.com/jquery-latest.js"></script>

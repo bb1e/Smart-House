@@ -5,8 +5,8 @@ session_start();
 	include("connection.php");
 	include("functions.php");
 	$user_data = check_login($con);
-	//acesso apenas ao privilégio user
-	if($user_data['privileges'] != "user"){
+	//acesso apenas ao privilégio guest
+	if($user_data['privileges'] != "guest"){
 		die("acess denied");
 	}
 
@@ -24,7 +24,7 @@ session_start();
 		$keep2 = array_slice($flipped2,0, 5); 
 		file_put_contents("api/files/humidity/log.txt", $keep2);
 
-		//valores para graficos//
+		//valores para graficos
 		   
 		/* Guardar no array $piecesValue as ultimas 5 variaveis do historico
 		   da temperature */
@@ -82,7 +82,7 @@ session_start();
 			array("label"=> "$arrayHour2[3]", "y"=> $arrayValue2[3]),
 			array("label"=> "$arrayHour2[4]", "y"=> $arrayValue2[4])
 		);
-
+		   
 ?>
 	
 
@@ -109,39 +109,18 @@ session_start();
 		</div>
 		<ul class="nav_list">
 		<li>
-			<a href="dashboard.php">
+			<a href="dashguest.php">
 				<i class='bx bx-grid-alt' ></i>
 				<span class="links_name">Dashboard</span>
 			</a>
 			<span class="tooltip">Dashboard</span>
 		</li>
 		<li>
-			<a href="smartobjects.php">
-				<i class='bx bx-coffee'></i>
-				<span class="links_name">Smart Objects</span>
-			</a>
-			<span class="tooltip">Smart Objects</span>
-		</li>
-		<li>
-			<a href="history.php">
-				<i class='bx bx-archive-in' ></i>
-				<span class="links_name">History</span>
-			</a>
-			<span class="tooltip">History</span>
-		</li>
-		<li>
-			<a href="analytics.php">
+			<a href="analyticsguest.php">
 				<i class='bx bx-pie-chart-alt-2' ></i>
 				<span class="links_name">Analytics</span>
 			</a>
 			<span class="tooltip">Analytics</span>
-		</li>
-		<li>
-			<a href="pictures.php">
-				<i class='bx bx-photo-album'></i>
-				<span class="links_name">Pictures</span>
-			</a>
-			<span class="tooltip">Pictures</span>
 		</li>
 		</ul>
 		<div class="logout">
@@ -155,7 +134,7 @@ session_start();
 	</div>
 	<!-- fim da sidebar -->
 	
-						<!-- ########## conteudo da pagina ######## -->
+					<!-- ########## conteudo da pagina ######## -->
   
 	<div class="home_content">
 	
@@ -193,7 +172,7 @@ session_start();
 	</div>
 	
 	
-					<!-- #######  SCRIPTS  ###### -->
+						<!-- #######  SCRIPTS  ###### -->
 	
    <script>
    //código js da sidebar
@@ -212,7 +191,7 @@ session_start();
 
    </script>
    
-	<script>
+<script>
 //codigo para fazer os graficos
 
 	window.onload = function () {
@@ -300,13 +279,14 @@ session_start();
 				}
 			   
 			}
-	</script>
+</script>
 
    
 	<!--  library canvasJS script -> biblioteca usada para fazer os gráficos bonitos -->   
 	<script src="https://canvasjs.com/assets/script/canvasjs.min.js">
 
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="path/to/chartjs/dist/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 </body>
 </html>

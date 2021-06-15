@@ -5,6 +5,10 @@ session_start();
 	include("connection.php");
 	include("functions.php");
 	$user_data = check_login($con);
+	//acesso apenas ao privilegio user
+	if($user_data['privileges'] != "user"){
+		die("acess denied");
+	}
 
 ?>
 
@@ -26,10 +30,21 @@ session_start();
   $value_lamp = file_get_contents("api/files/lamp/value.txt");
   $date_lamp = file_get_contents("api/files/lamp/date.txt");
   
+  $value_motion = file_get_contents("api/files/motion/value.txt");
+  $date_motion = file_get_contents("api/files/motion/date.txt");
   
-	//qualificacao da badges da tabela de sensores
+  $value_fire = file_get_contents("api/files/fire/value.txt");
+  $date_fire = file_get_contents("api/files/fire/date.txt");
+  
+  
+	//qualificacao da badges da tabela de sensores e verificacao para alertas//
+	
+	//temperature
 	if($value_temp > 35){
-	  $temp_warn = "very hot";
+		echo '<script>alert("Very hot outside, be careful!")</script>';
+		$temp_warn = "very hot";
+		//toca alrme para avisar o utilizador
+		exec('C:\\UniServerZ\\www\\SmartHouse\\python\\sound.py');
 	}
 	else if($value_temp > 27 && $value_temp < 35){
 		$temp_warn = "hot";
@@ -41,9 +56,13 @@ session_start();
 		$temp_warn = "cold";
 	}
 	else{
+		echo '<script>alert("Very cold outside, be careful!")</script>';
 		$temp_warn = "very cold";
+		//toca alrme para avisar o utilizador
+		exec('C:\\UniServerZ\\www\\SmartHouse\\python\\sound.py');
 	}
 	
+	//humidity
 	if($value_humi < 20){
 	  $humi_warn = "dry";
 	}
@@ -60,17 +79,40 @@ session_start();
 		$humi_warn = "very humid";
 	}
 	
-	if($value_lumi < 30){
-	  $lumi_warn = "low";
+	//luminosity
+	if($value_lumi == 1){
+	  $lumi_warn = "Day time";
+	  $value_lumi = "Light";
 	}
-	else if($value_humi > 30 && $value_humi < 70){
-		$lumi_warn = "medium";
+	else if($value_lumi == 0){
+		$lumi_warn = "Night Time";
+		$value_lumi = "No light";
 	}
-	else{
-		$lumi_warn = "high";
+	
+	//motion
+	if($value_motion == 1){
+		$motion_warn = "No one here";
+		$value_motion = "No motion";
+		
+	}else if($value_motion == 0){
+		$motion_warn = "Someone here";
+		$value_motion = "Motion";
 	}
-  
+	
+	//fire
+	if($value_fire == 0){
+		$fire_warn = "No fire";
+		$value_fire = "No";
+	}else if($value_fire == 1){
+		$fire_warn = "Fire";
+		echo '<script>alert("Theres a fire, call the fire department!! Fire Sprinkler activated. ")</script>';
+		//toca alrme para avisar o utilizador
+		exec('C:\\UniServerZ\\www\\SmartHouse\\python\\sound.py');
+		$value_fire = "Yes";
+	}
+ 
 ?>
+
 
 
 <!DOCTYPE html>
@@ -86,101 +128,110 @@ session_start();
     <title>Smart House</title>
 </head>
 <body>
+
 	<!-- sidebar -->
-	 <div class="sidebar">
-    <div class="logo_content">
-      <div class="logo">
-        <i class='bx bx-home-heart' ></i>
-        <div class="logo_name">Smart House</div>
-      </div>
-      <i class='bx bx-menu' id="btn" ></i>
-    </div>
-    <ul class="nav_list">
-      <li>
-        <a href="dashboard.php">
-          <i class='bx bx-grid-alt' ></i>
-          <span class="links_name">Dashboard</span>
-        </a>
-        <span class="tooltip">Dashboard</span>
-      </li>
-      <li>
-        <a href="smartobjects.php">
-          <i class='bx bx-coffee'></i>
-          <span class="links_name">Smart Objects</span>
-        </a>
-		<span class="tooltip">Smart Objects</span>
-      </li>
-      <li>
-        <a href="history.php">
-          <i class='bx bx-archive-in' ></i>
-          <span class="links_name">History</span>
-        </a>
-		<span class="tooltip">History</span>
-      </li>
-      <li>
-        <a href="analytics.php">
-          <i class='bx bx-pie-chart-alt-2' ></i>
-          <span class="links_name">Analytics</span>
-        </a>
-		<span class="tooltip">Analytics</span>
-      </li>
-	  <li>
-        <a href="pictures.php">
-          <i class='bx bx-photo-album'></i>
-          <span class="links_name">Pictures</span>
-        </a>
-		<span class="tooltip">Pictures</span>
-      </li>
-    </ul>
-      <div class="logout">
-		<div>
-	    <a href="logout.php">
-        <i class='bx bx-log-out' id="log_out" ></i>
-		</a>
-		<span class="tooltip">Logout</span>
+	<div class="sidebar">
+		<div class="logo_content">
+			<div class="logo">
+				<i class='bx bx-home-heart' ></i>
+				<div class="logo_name">Smart House</div>
+			</div>
+			<i class='bx bx-menu' id="btn" ></i>
 		</div>
-      </div>
-  </div>
+		<ul class="nav_list">
+		<li>
+			<a href="dashboard.php">
+				<i class='bx bx-grid-alt' ></i>
+				<span class="links_name">Dashboard</span>
+			</a>
+			<span class="tooltip">Dashboard</span>
+		</li>
+		<li>
+			<a href="smartobjects.php">
+				<i class='bx bx-coffee'></i>
+				<span class="links_name">Smart Objects</span>
+			</a>
+			<span class="tooltip">Smart Objects</span>
+		</li>
+		<li>
+			<a href="history.php">
+				<i class='bx bx-archive-in' ></i>
+				<span class="links_name">History</span>
+			</a>
+			<span class="tooltip">History</span>
+		</li>
+		<li>
+			<a href="analytics.php">
+				<i class='bx bx-pie-chart-alt-2' ></i>
+				<span class="links_name">Analytics</span>
+			</a>
+			<span class="tooltip">Analytics</span>
+		</li>
+		<li>
+			<a href="pictures.php">
+				<i class='bx bx-photo-album'></i>
+				<span class="links_name">Pictures</span>
+			</a>
+			<span class="tooltip">Pictures</span>
+		</li>
+		</ul>
+		<div class="logout">
+			<div>
+				<a href="logout.php">
+					<i class='bx bx-log-out' id="log_out" ></i>
+				</a>
+				<span class="tooltip">Logout</span>
+			</div>
+		</div>
+	</div>
 	<!-- fim da sidebar -->
+	
+					<!-- ########## conteudo da pagina ######## -->
   
 	<div class="home_content">
-    <div class="row">
-		<div class="col-sm-12">
-			<video autoplay loop>  
-				<source src="imgs/header.mp4" type="video/mp4">
-			</video>
-		</div>
-    </div>  
-	<br><br>
-
-    <div id="main" class="container">
-	<?php include("dashvalues.php"); ?>
-        <div class="row">
-			<div class="col-sm-4">
-                <div class="card text-center cardcolor">
-                    <div class="card-body"><img src="imgs/sunicon.png" alt="sun image" class="icons">
-					<br><b>Luminosity: <?php echo $value_lumi; ?>%</b>
-					</div>
-                </div>
-				<br><br>
-                <div class="card text-center cardcolor">
-                    <div class="card-body"><img src="imgs/tempicon.png" alt="temperature image" class="icons">
-					<br><b>Temperature: <?php echo $value_temp; ?>º</b>
-					</div>
-					
-                </div>	
+	
+		<!-- header da pagina -->
+		<div class="row">
+			<div class="col-sm-12">
+				<video autoplay loop>  
+					<source src="imgs/header.mp4" type="video/mp4">
+				</video>
 			</div>
-			<div class="col-sm-4">
-                <div class="card text-center cardcolor">
-                    <div id="main" class="card-body">
-					<?php //fazer a mudan?a de imagem
-						if($value_door == 1){
-							echo '<img src="imgs/dooricon.png" alt="door image" class="icons">';
-						}else if($value_door == 0){
-							echo '<img src="imgs/closeddooricon.png" alt="door image" class="icons">';
-						}
-					?>
-					<br><b>Door: <?php //mudanca de texto
+		</div> 
+		<!-- fim do header da pagina -->
+		<br><br>
+
+		<div class="container">
+	
+			<!-- divs dos 4 icons iniciais -->
+	
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="card text-center cardcolor">
+						<div class="card-body"><img src="imgs/sunicon.png" alt="sun image" class="icons">
+							<br><b>Luminosity: 
+								<?php echo $value_lumi ?></b>
+						</div>
+					</div>
+					<br><br>
+					<div class="card text-center cardcolor">
+						<div class="card-body"><img src="imgs/tempicon.png" alt="temperature image" class="icons">
+							<br><b>Temperature: <?php echo $value_temp; ?>?</b>
+						</div>
+					</div>	
+				</div>
+				<div class="col-sm-4">
+					<div class="card text-center cardcolor">
+						<div class="card-body">
+							<?php //fazer a mudanca de imagem
+								if($value_door == 1){
+									echo '<img src="imgs/dooricon.png" alt="door image" class="icons">';
+								}else if($value_door == 0){
+									echo '<img src="imgs/closeddooricon.png" alt="door image" class="icons">';
+								}
+							?>
+							<br><b>Door: 
+								<?php //mudanca de texto
 									if($value_door == 0){
 										echo "Closed";	
 									}elseif($value_door == 1){
@@ -188,120 +239,122 @@ session_start();
 									}else{
 										echo "Error";
 									}
-								 ?></b>
+								?></b>
+						</div>
 					</div>
-                </div>
-				<br><br>
-                <div class="card text-center cardcolor">
-                    <div class="card-body" id="div_refresh">
-					<?php
-						if($value_lamp == 1){
-							echo '<img src="imgs/lamponicon.png" alt="lamp image" class="icons">';
-						}else if($value_lamp == 0){
-							echo '<img src="imgs/lampicon.png" alt="lamp image" class="icons">';
-						}
-					?>
-					<br><b>Lamp: <?php
+					<br><br>
+					<div class="card text-center cardcolor">
+						<div class="card-body">
+							<?php
+								if($value_lamp == 2){
+									echo '<img src="imgs/lamponicon.png" alt="lamp image" class="icons">';
+								}else if($value_lamp == 0){
+									echo '<img src="imgs/lampicon.png" alt="lamp image" class="icons">';
+								}
+							?>
+							<br><b>Lamp: 
+								<?php
 									if($value_lamp == 0){
 										echo "Off";	
-									}elseif($value_lamp == 1){
+									}elseif($value_lamp == 2){
 										echo "On";
 									}else{
 										echo "Error";
 									}
-								 ?></b></b>
+								?></b></b>
+						</div>
 					</div>
-                </div>
-		
-			</div>
-			<!-- calend?rio -->
-			<div class="col-sm-4">
-			<div class="card text-center cardcolor">
-					<div class="calendar">
-						<div class="calendar-header">
-							<span class="month-picker" id="month-picker">February</span>
-							<div class="year-picker">
-							<span id="year">2021</span>
+				</div>
+			
+				<!-- calendario -->
+				<div class="col-sm-4">
+					<div class="card text-center cardcolor">
+						<div class="calendar">
+							<div class="calendar-header">
+								<span class="month-picker" id="month-picker">February</span>
+								<div class="year-picker">
+									<span id="year">2021</span>
+								</div>
 							</div>
+							<div class="calendar-body">
+								<div class="calendar-week-day">
+									<div>Sun</div>
+									<div>Mon</div>
+									<div>Tue</div>
+									<div>Wed</div>
+									<div>Thu</div>
+									<div>Fri</div>
+									<div>Sat</div>
+								</div>
+								<div class="calendar-days"></div>
+							</div>
+							<div class="month-list"></div>
+							<br><br><br>
 						</div>
-					<div class="calendar-body">
-						<div class="calendar-week-day">
-							<div>Sun</div>
-							<div>Mon</div>
-							<div>Tue</div>
-							<div>Wed</div>
-							<div>Thu</div>
-							<div>Fri</div>
-							<div>Sat</div>
-						</div>
-						<div class="calendar-days"></div>
 					</div>
-						<div class="month-list"></div>
-						<br><br><br>
-					</div>
+				</div>
+				<!-- fim de calendario -->
 			</div>
-			</div>
-			<!-- fim de calend?rio -->
-		</div>
 	
     
-        <br><br>
-		<!-- tabela de sensores -->
-		<!-- faltam 2 sensores -->
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="card cardcolor">
-                    <div class="card-header textcolor"><b>Sensor Table</b></div>
-                    <div class="card-body">
-                        <table class="table table-bordered">
-                            <thead>
-                              <tr class="textcolor">
-                                <th scope="col">IoT Device Type</th>
-                                <th scope="col">Value</th>
-                                <th scope="col">Update date</th>
-                                <th scope="col">Warnings</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr class="textcolor">
-                              <td>Temperature</td>
-                                <td><?php echo $value_temp; ?>º</td>
-                                <td><?php echo $date_temp; ?></td>
-                                <td><span class="badge badge-pill badge-info"><?php echo $temp_warn ?></span></td>
-                              </tr>
-                              <tr class="textcolor">
-                                <td>Humidity</td>
-                                <td><?php echo $value_humi; ?>%</td>
-                                <td><?php echo $date_humi; ?></td>
-                                <td><span class="badge badge-pill badge-primary"><?php echo $humi_warn ?></span></td>
-                              </tr>
-                              <tr class="textcolor">
-                                <td>Luminosity</td>
-                                <td><?php echo $value_lumi; ?>%</td>
-                                <td><?php echo $date_lumi; ?></td>
-                                <td><span class="badge badge-pill badge-info"><?php echo $lumi_warn ?></span></td>
-                              </tr>
-							  <tr class="textcolor">
-                                <td>sensor4</td>
-                                <td><?php echo $value_lumi; ?>%</td>
-                                <td><?php echo $date_lumi; ?></td>
-                                <td><span class="badge badge-pill badge-info"><?php echo $lumi_warn ?></span></td>
-                              </tr>
-							  <tr class="textcolor">
-                                <td>sensor5</td>
-                                <td><?php echo $value_lumi; ?>%</td>
-                                <td><?php echo $date_lumi; ?></td>
-                                <td><span class="badge badge-pill badge-info"><?php echo $lumi_warn ?></span></td>
-                              </tr>
-                            </tbody>
-                          </table>
-                    </div>
-                </div>
-            </div>
-        </div>   
-    </div>
+			<br><br>
+			<!-- tabela de sensores -->
+			<!-- faltam 2 sensores -->
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="card cardcolor">
+						<div class="card-header textcolor"><b>Sensor Table</b></div>
+						<div class="card-body">
+							<table class="table table-bordered">
+								<thead>
+									<tr class="textcolor">
+										<th scope="col">IoT Device Type</th>
+										<th scope="col">Value</th>
+										<th scope="col">Update date</th>
+										<th scope="col">Warnings</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="textcolor">
+										<td>Temperature Sensor</td>
+										<td><?php echo $value_temp; ?>?</td>
+										<td><?php echo $date_temp; ?></td>
+										<td><span class="badge badge-pill badge-info"><?php echo $temp_warn ?></span></td>
+									</tr>
+									<tr class="textcolor">
+										<td>Humidity Sensor</td>
+										<td><?php echo $value_humi; ?>%</td>
+										<td><?php echo $date_humi; ?></td>
+										<td><span class="badge badge-pill badge-primary"><?php echo $humi_warn ?></span></td>
+									</tr>
+									<tr class="textcolor">
+										<td>Luminosity Sensor</td>
+										<td><?php echo $value_lumi; ?></td>
+										<td><?php echo $date_lumi; ?></td>
+										<td><span class="badge badge-pill badge-info"><?php echo $lumi_warn ?></span></td>
+									</tr>
+									<tr class="textcolor">
+										<td>Motion Sensor</td>
+										<td><?php echo $value_motion?></td>
+										<td><?php echo $date_motion; ?></td>
+										<td><span class="badge badge-pill badge-primary"><?php echo $motion_warn ?></span></td>
+									</tr>
+									<tr class="textcolor">
+										<td>Fire Sensor</td>
+										<td><?php echo $value_fire; ?></td>
+										<td><?php echo $date_fire; ?></td>
+										<td><span class="badge badge-pill badge-info"><?php echo $fire_warn ?></span></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>   
+		</div>
 	</div>
 	
+						<!-- #######  SCRIPTS  ###### -->
 	
 	<script>
 	//script para deixar a sidebar interativa
@@ -320,25 +373,8 @@ session_start();
 
 	</script>
 	
-	<script>
-	//tentativa de c?digo ajax mas fds n?o est? a funcionar
-	
-        setInterval(function() {
-            
-        }, 2000);
-    
-	</script>
-	<script>
-		function updateDiv()
-		{ 
-			$( "#main" ).load(dashvalues.php + " #main" );
-		} }, 1000);
-		$("#main").load(" #main");
-	</script>
 	
 	<script src="calendar.js"></script>
-
-    <!--SCRIPTS-->
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>

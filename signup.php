@@ -18,11 +18,12 @@ session_start();
 			$hashpassword = password_hash($password, PASSWORD_DEFAULT);
 			
 			//save to database
-			$user_id = random_num(20);
+			$user_id = random_num(20); //chama a função q cria um id random para o utilizador
 			$query = "insert into users (user_id,user_name,password,privileges) values ('$user_id','$user_name','$hashpassword','user')";
 
 			mysqli_query($con, $query);
 
+			//faz o redirect para a pagina login
 			header("Location: login.php");
 			die;
 		}else
@@ -56,17 +57,17 @@ session_start();
                 <div class="col-sm-4 offset offset-sm-4">
                     <form method="POST">
                         <div class="wrap-login">
-                          <a style="text-align: center"><img src="imgs/logo.png" alt="logo" class="loginlogo"></a>              
-                        <div class="form-group">
-                        <input type="text" class="form-control" id="usr" name="user_name" placeholder="USERNAME" Required style="background-color: transparent">
-                        </div>
-                        <div class="form-group">
-                        <input type="password" class="form-control" id="pwd" name="password" placeholder="PASSWORD" Required style="background-color: transparent">
-                        </div>
+							<a style="text-align: center"><img src="imgs/logo.png" alt="logo" class="loginlogo"></a>              
+							<div class="form-group">
+								<input type="text" class="form-control" id="usr" name="user_name" placeholder="USERNAME" Required style="background-color: transparent">
+							</div>
+							<div class="form-group">
+								<input type="password" class="form-control" id="pwd" name="password" placeholder="PASSWORD" Required style="background-color: transparent">
+							</div>
 						
-                        <button type="submit" name="submit" class="login-form-btn">SIGNUP</button>
-						<br>
-						<a href="login.php">Click to Login</a><br><br>
+							<button type="submit" name="submit" class="login-form-btn">SIGNUP</button>
+							<br>
+							<a href="login.php">Click to Login</a><br><br>
 						</div>
                     </form>
                 </div>

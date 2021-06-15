@@ -1,17 +1,5 @@
 <?php
 
-	/*não faço a minima ideia se a autenticação dos pedidos https é suposto
-		ser algo assim mas dps vejo isso...*/
-	function permitions() {  
-		if (isset($_SERVER['HTTP_ORIGIN'])){
-			header("Access-Control-Allow-Origin: *");
-			header("Access-Control-Allow-Methods: GET, POST");
-			header("Access-Control-Allow-Headers: Origin, Authorization, X-Requested-With, Content-Type, Accept");
-			header('Access-Control-Allow-Credentials: true');      
-		}  
-	}
-	permitions();
-
     header('Content-Type: text/html; charset=utf-8');
 
     if($_SERVER['REQUEST_METHOD']=='POST'){

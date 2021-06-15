@@ -1,5 +1,11 @@
 <?php 
 
+		// USERS //
+		
+// user:bruna pass:12345 privilegio:admin
+// user:maria pass:123 privilegio:user
+// user:joao pass:321 privilegio:guest
+
 session_start();
 
 	include("connection.php");
@@ -27,28 +33,33 @@ session_start();
 					$user_data = mysqli_fetch_assoc($result);
 					
 					/*verifica se a password digitada é igual ao código 
-					  encriptado q está na base de dados*/
+					  encriptado que está na base de dados e verifica qual e
+					  o privilegio do utilizador*/
 					if(password_verify($password, $user_data['password']) && $user_data['privileges'] == "user")
 					{
 
 						$_SESSION['user_id'] = $user_data['user_id'];
+						//redireciona para a dashboard destinada aos users
 						header("Location: dashboard.php");
 						die;
 					
-					}else if(password_verify($password, $user_data['password']) && $user_data['privileges'] == "visitor")
+					}else if(password_verify($password, $user_data['password']) && $user_data['privileges'] == "guest")
 					{
 						$_SESSION['user_id'] = $user_data['user_id'];
-						header("Location: dashvisitor.php");
+						//redireciona para a dashboard destinada aos guests
+						header("Location: dashguest.php");
 						die;
 					
 					}else if(password_verify($password, $user_data['password']) && $user_data['privileges'] == "admin")
 					{
 						$_SESSION['user_id'] = $user_data['user_id'];
+						//redireciona para a dashboard destinada aos admins
 						header("Location: dashadmin.php");
 						die;
 						
 					}else{
 						
+						//alerta quando algo está errado
 						echo '<div class="alert alert-danger" ;style="text-align:center">
 								<button type="button" class="close" data-dismiss="alert">&times;</button>
 								<center>Wrong username or password!
@@ -56,8 +67,6 @@ session_start();
 					}
 				}
 			}
-			
-			
 		}
 	}
 

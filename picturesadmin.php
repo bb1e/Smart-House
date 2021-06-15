@@ -5,16 +5,22 @@ session_start();
 	include("connection.php");
 	include("functions.php");
 	$user_data = check_login($con);
+	//acesso apenas ao privilégio admin
+	if($user_data['privileges'] != "admin"){
+		die("acess denied");
+	}
 
 ?>
 
 <?php
+	//executar ficheiro python para tirar foto quando é clicado o botão
 	if (isset($_POST['take']))
 	{
-		exec("python capturaWebcamOpenCV.py");
+		/*para que funcione é preciso mudar a path do ficheiro para a path 
+			onde está o ficheiro na maquina atual*/
+		exec('C:\UniServerZ\www\SmartHouse\python\capturaWebcamOpenCV.py');
+		
 	}
-	
-	exec("python capturaWebcamOpenCV.py");
 ?>
 
 
@@ -32,136 +38,124 @@ session_start();
 </head>
 <body>
 	<!-- sidebar -->
-	 <div class="sidebar">
-    <div class="logo_content">
-      <div class="logo">
-        <i class='bx bx-home-heart' ></i>
-        <div class="logo_name">Smart House</div>
-      </div>
-      <i class='bx bx-menu' id="btn" ></i>
-    </div>
-    <ul class="nav_list">
-      <li>
-        <a href="dashadmin.php">
-          <i class='bx bx-grid-alt' ></i>
-          <span class="links_name">Dashboard</span>
-        </a>
-        <span class="tooltip">Dashboard</span>
-      </li>
-      <li>
-        <a href="smartobjectsadmin.php">
-          <i class='bx bx-coffee'></i>
-          <span class="links_name">Smart Objects</span>
-        </a>
-		<span class="tooltip">Smart Objects</span>
-      </li>
-      <li>
-        <a href="historyadmin.php">
-          <i class='bx bx-archive-in' ></i>
-          <span class="links_name">History</span>
-        </a>
-		<span class="tooltip">History</span>
-      </li>
-      <li>
-        <a href="analyticsadmin.php">
-          <i class='bx bx-pie-chart-alt-2' ></i>
-          <span class="links_name">Analytics</span>
-        </a>
-		<span class="tooltip">Analytics</span>
-      </li>
-	  <li>
-        <a href="picturesadmin.php">
-          <i class='bx bx-photo-album'></i>
-          <span class="links_name">Pictures</span>
-        </a>
-		<span class="tooltip">Pictures</span>
-      </li>
-	  <li>
-        <a href="adminspace.php">
-          <i class='bx bx-user'></i>
-          <span class="links_name">Admin Space</span>
-        </a>
-		<span class="tooltip">Admin Space</span>
-      </li>
-    </ul>
-      <div class="logout">
-		<div>
-	    <a href="logout.php">
-        <i class='bx bx-log-out' id="log_out" ></i>
-		</a>
-		<span class="tooltip">Logout</span>
+	<div class="sidebar">
+		<div class="logo_content">
+			<div class="logo">
+				<i class='bx bx-home-heart' ></i>
+				<div class="logo_name">Smart House</div>
+			</div>
+			<i class='bx bx-menu' id="btn" ></i>
 		</div>
-      </div>
-  </div>
+		<ul class="nav_list">
+		<li>
+			<a href="dashadmin.php">
+				<i class='bx bx-grid-alt' ></i>
+				<span class="links_name">Dashboard</span>
+			</a>
+			<span class="tooltip">Dashboard</span>
+		</li>
+		<li>
+			<a href="smartobjectsadmin.php">
+				<i class='bx bx-coffee'></i>
+				<span class="links_name">Smart Objects</span>
+			</a>
+			<span class="tooltip">Smart Objects</span>
+		</li>
+		<li>
+			<a href="historyadmin.php">
+				<i class='bx bx-archive-in' ></i>
+				<span class="links_name">History</span>
+			</a>
+			<span class="tooltip">History</span>
+		</li>
+		<li>
+			<a href="analyticsadmin.php">
+				<i class='bx bx-pie-chart-alt-2' ></i>
+				<span class="links_name">Analytics</span>
+			</a>
+			<span class="tooltip">Analytics</span>
+		</li>
+		<li>
+			<a href="picturesadmin.php">
+				<i class='bx bx-photo-album'></i>
+				<span class="links_name">Pictures</span>
+			</a>
+			<span class="tooltip">Pictures</span>
+		</li>
+		<li>
+			<a href="adminspace.php">
+				<i class='bx bx-user'></i>
+				<span class="links_name">Admin Space</span>
+			</a>
+			<span class="tooltip">Admin Space</span>
+		</li>
+		</ul>
+		<div class="logout">
+			<div>
+				<a href="logout.php">
+				<i class='bx bx-log-out' id="log_out" ></i>
+				</a>
+				<span class="tooltip">Logout</span>
+			</div>
+		</div>
+	</div>
 	<!-- fim da sidebar -->
+	
+						<!-- ########## conteudo da pagina ######## -->
   
 	<div class="home_content">
-    <div class="row">
-		<div class="col-sm-12">
-			<video autoplay loop>  
-				<source src="imgs/header.mp4" type="video/mp4">
-			</video>
+	
+		<!-- header da pagina -->
+		<div class="row">
+			<div class="col-sm-12">
+				<video autoplay loop>  
+					<source src="imgs/header.mp4" type="video/mp4">
+				</video>
+			</div>
 		</div>
-    </div>  
-	<br><br>
-		<!--### foto ##-->
-	<div class="container">
-	<div class="row">
-			<div class="col-sm-7">
-				<div class="card text-center cardcolor">
-					<div class="card-header">Last Picture</div>
-					<div class="card-body"><img src="imgs/webcam.png" alt="web image" width="350px">
-						<br><b>
-								Batata: 
+		<!-- fim do header da pagina -->	
+		<br><br>
+	
+	
+		<!--### apresentacao da ultima foto tirada ##-->
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-7">
+					<div class="card text-center cardcolor">
+						<div class="card-header">Last Picture</div>
+						<div class="card-body"><img src="imgs/webcam.jpg" alt="web image" width="350px">
+							<br><b>
 									<?php 
+									//mostrar as informacoes da foto
+									
 										$filename = 'imgs/webcam.jpg';
 										if (file_exists($filename)) {
 									
-											echo "<a> was last modified: </a>" . date ("F d Y H:i:s.", filemtime($filename));
+											echo "<a> Was last modified: </a>" . date ("F d Y H:i:s.", filemtime($filename));
 										}
 									?>
 							</b>
-					</div>
-                </div>
-				
-			</div>
-			
-			<!-- aqui é o botão q vai servir para tirar uma ft
-				vai ter q ser usado python e a ft vai ser guardad normal
-				como a do retângulo grande e tem q se mandar tb para a base
-				de dados para dps ser apresentada no histórico -->
-			<form method="post" >
-			<div class="col-sm-5">
-				<button type="submit" name="take" class="btn btn-outline-info"><i class='bx bxs-camera'></i></button>
-			</div>
-			</form>
-	</div>
-	<br><br>
-	
-	<!--#### HISTÓRICO DE IMAGENS!!! ###-->
-	<div class="row">
-		<div class="col-sm-12">
-				<div class="card text-center cardcolor">
-					<div class="card-header">Picture History</div>
-					<div class="card-body">
-					<?php
-						//vai buscar as imagens guardadas na base de dados
-						$sql = "SELECT * FROM images;";
-						$res = mysqli_query($con,$sql);
-						while ($row = mysqli_fetch_array($res))
-						{
-							echo '<img src="data:image/jpeg;base64,'.base64_encode($row['imagem']).'" width="200px"/>';
-						}
-					?>
+						</div>
 					</div>
 				</div>
-				<br>
+			
+				<!-- aqui é o botão que tira foto -->
+				<div class="col-sm-5">
+					<div class="card text-center" style="background-color: inherit">
+						<div class="card-body">
+							<br><br><br><br><br><br>
+							<form method="post">
+								<button type="submit" name="take" class="btn btn-outline-info btn-lg"><i class='bx bxs-camera'></i></button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br><br>
 		</div>
 	</div>
-	</div>
 	
-	</div>
-	
+				<!-- #######  SCRIPTS  ###### -->
 	
 	<script>
 	let btn = document.querySelector("#btn");
@@ -179,7 +173,7 @@ session_start();
 	</script>
 	<script src="calendar.js"></script>
 
-    <!--SCRIPTS-->
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 </body>

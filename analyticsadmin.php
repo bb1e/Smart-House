@@ -5,15 +5,19 @@ session_start();
 	include("connection.php");
 	include("functions.php");
 	$user_data = check_login($con);
+	//acesso apenas ao privilégio admin
+	if($user_data['privileges'] != "admin"){
+		die("acess denied");
+	}
 
 ?>
 
 <?php
 		//guardar apenas as ultimas 5 linhas do log no ficheiro
 		$lines1 = file('api/files/temperature/log.txt');
-		$flipped1 = array_reverse($lines1);
-		$keep1 = array_slice($flipped1,0, 5); 
-		file_put_contents("api/files/temperature/log.txt", $keep1);
+		$flipped1 = array_reverse($lines1); //inverte o array
+		$keep1 = array_slice($flipped1,0, 5);  //mantém apenas 5 linhas
+		file_put_contents("api/files/temperature/log.txt", $keep1); //envia para o ficheiro
 		
 		$lines2 = file('api/files/humidity/log.txt');
 		$flipped2 = array_reverse($lines2);
@@ -95,70 +99,74 @@ session_start();
 </head>
 <body>
 	<!-- sidebar -->
-	 <div class="sidebar">
-    <div class="logo_content">
-      <div class="logo">
-        <i class='bx bx-home-heart' ></i>
-        <div class="logo_name">Smart House</div>
-      </div>
-      <i class='bx bx-menu' id="btn" ></i>
-    </div>
-    <ul class="nav_list">
-      <li>
-        <a href="dashadmin.php">
-          <i class='bx bx-grid-alt' ></i>
-          <span class="links_name">Dashboard</span>
-        </a>
-        <span class="tooltip">Dashboard</span>
-      </li>
-      <li>
-        <a href="smartobjectsadmin.php">
-          <i class='bx bx-coffee'></i>
-          <span class="links_name">Smart Objects</span>
-        </a>
-		<span class="tooltip">Smart Objects</span>
-      </li>
-      <li>
-        <a href="historyadmin.php">
-          <i class='bx bx-archive-in' ></i>
-          <span class="links_name">History</span>
-        </a>
-		<span class="tooltip">History</span>
-      </li>
-      <li>
-        <a href="analyticsadmin.php">
-          <i class='bx bx-pie-chart-alt-2' ></i>
-          <span class="links_name">Analytics</span>
-        </a>
-		<span class="tooltip">Analytics</span>
-      </li>
-	  <li>
-        <a href="picturesadmin.php">
-          <i class='bx bx-photo-album'></i>
-          <span class="links_name">Pictures</span>
-        </a>
-		<span class="tooltip">Pictures</span>
-      </li>
-	  <li>
-        <a href="adminspace.php">
-          <i class='bx bx-user'></i>
-          <span class="links_name">Admin Space</span>
-        </a>
-		<span class="tooltip">Admin Space</span>
-      </li>
-    </ul>
-      <div class="logout">
-		<div>
-	    <a href="logout.php">
-        <i class='bx bx-log-out' id="log_out" ></i>
-		</a>
-		<span class="tooltip">Logout</span>
+	<div class="sidebar">
+		<div class="logo_content">
+			<div class="logo">
+				<i class='bx bx-home-heart' ></i>
+				<div class="logo_name">Smart House</div>
+			</div>
+			<i class='bx bx-menu' id="btn" ></i>
 		</div>
-      </div>
-  </div>
+		<ul class="nav_list">
+		<li>
+			<a href="dashadmin.php">
+				<i class='bx bx-grid-alt' ></i>
+				<span class="links_name">Dashboard</span>
+			</a>
+			<span class="tooltip">Dashboard</span>
+		</li>
+		<li>
+			<a href="smartobjectsadmin.php">
+				<i class='bx bx-coffee'></i>
+				<span class="links_name">Smart Objects</span>
+			</a>
+			<span class="tooltip">Smart Objects</span>
+		</li>
+		<li>
+			<a href="historyadmin.php">
+				<i class='bx bx-archive-in' ></i>
+				<span class="links_name">History</span>
+			</a>
+			<span class="tooltip">History</span>
+		</li>
+		<li>
+			<a href="analyticsadmin.php">
+				<i class='bx bx-pie-chart-alt-2' ></i>
+				<span class="links_name">Analytics</span>
+			</a>
+			<span class="tooltip">Analytics</span>
+		</li>
+		<li>
+			<a href="picturesadmin.php">
+				<i class='bx bx-photo-album'></i>
+				<span class="links_name">Pictures</span>
+			</a>
+			<span class="tooltip">Pictures</span>
+		</li>
+		<li>
+			<a href="adminspace.php">
+				<i class='bx bx-user'></i>
+				<span class="links_name">Admin Space</span>
+			</a>
+			<span class="tooltip">Admin Space</span>
+		</li>
+		</ul>
+		<div class="logout">
+			<div>
+				<a href="logout.php">
+				<i class='bx bx-log-out' id="log_out" ></i>
+				</a>
+				<span class="tooltip">Logout</span>
+			</div>
+		</div>
+	</div>
 	<!-- fim da sidebar -->
+	
+					<!-- ########## conteudo da pagina ######## -->
   
 	<div class="home_content">
+	
+		<!-- header da pagina -->
 		<div class="row">
 		<div class="col-sm-12">
 			<video autoplay loop>  
@@ -166,32 +174,33 @@ session_start();
 			</video>
 		</div>
 		</div>
+		<!-- fim do header da pagina -->
 		<br><br>
-		<div class="container">
-        <div class="row">
-			<div class="col-sm-6">
-                <div class="card text-center cardcolor">
-                    <div class="card-body">
-					<!-- apresenta grafico -->
-					<div id="chartContainer" style="height: 500px; width: 100%;"></div>
-					</div>
-                </div>
-			</div>
-			<div class="col-sm-6">
-                <div class="card text-center cardcolor">
-                    <div class="card-body">
-					<!-- apresenta grafico -->
-					<div id="chartContainer2" style="height: 500px; width: 100%;"></div>
-					</div>
-                </div>
-				
-            </div>
 		
-		</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="card text-center cardcolor">
+						<div class="card-body">
+							<!-- apresenta grafico da temperature -->
+							<div id="chartContainer" style="height: 500px; width: 100%;"></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="card text-center cardcolor">
+						<div class="card-body">
+							<!-- apresenta grafico da humidity -->
+							<div id="chartContainer2" style="height: 500px; width: 100%;"></div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	
 	
+						<!-- #######  SCRIPTS  ###### -->
 	
    <script>
    //código js da sidebar
@@ -210,7 +219,7 @@ session_start();
 
    </script>
    
-<script>
+	<script>
 //codigo para fazer os graficos
 
 	window.onload = function () {
@@ -233,15 +242,10 @@ session_start();
 					toolTip: {
 						shared: true
 					},
-					/*legend: {
-						cursor:"pointer",
-						itemclick: toggleDataSeries
-					},*/
 					data: [{
 						type: "column",
 						color: "#0ff1ce",
 						name: "value",
-						//legendText: "",
 						showInLegend: false, 
 						dataPoints:<?php echo json_encode($dataPoints,
 								JSON_NUMERIC_CHECK); ?>
@@ -303,13 +307,12 @@ session_start();
 				}
 			   
 			}
-</script>
+	</script>
 
    
-<!--  library canvasJS script -->   
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js">
+	<!--  library canvasJS script -> biblioteca usada para fazer os gráficos bonitos -->   
+	<script src="https://canvasjs.com/assets/script/canvasjs.min.js">
 
-    <!--SCRIPTS-->
 	<script src="path/to/chartjs/dist/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
