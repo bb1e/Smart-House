@@ -90,12 +90,12 @@ session_start();
 	
 	//motion
 	if($value_motion == 1){
-		$motion_warn = "No one here";
-		$value_motion = "No motion";
-		
-	}else if($value_motion == 0){
 		$motion_warn = "Someone here";
 		$value_motion = "Motion";
+		
+	}else if($value_motion == 0){
+		$motion_warn = "No one here";
+		$value_motion = "No motion";
 	}
 	
 	//fire
@@ -220,7 +220,7 @@ session_start();
 					<br><br>
 					<div class="card text-center cardcolor">
 						<div class="card-body"><img src="imgs/tempicon.png" alt="temperature image" class="icons">
-							<br><b>Temperature: <?php echo $value_temp; ?>?</b>
+							<br><b>Temperature: <?php echo $value_temp; ?>º</b>
 						</div>
 					</div>	
 				</div>
@@ -321,7 +321,7 @@ session_start();
 								<tbody>
 									<tr class="textcolor">
 										<td>Temperature Sensor</td>
-										<td><?php echo $value_temp; ?>?</td>
+										<td><?php echo $value_temp; ?>º</td>
 										<td><?php echo $date_temp; ?></td>
 										<td><span class="badge badge-pill badge-info"><?php echo $temp_warn ?></span></td>
 									</tr>
