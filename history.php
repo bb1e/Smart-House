@@ -371,7 +371,7 @@ session_start();
 				<div class="col-sm-4">
 					<div class="card text-center cardcolor">
 						<div class="card-header">
-							<b>MOTION</b>
+							<b>Motion</b>
 						</div>
 						<div class="card-body">
 							<table class="table table-bordered">
@@ -438,7 +438,7 @@ session_start();
 				<div class="col-sm-4">
 					<div class="card text-center cardcolor">
 						<div class="card-header">
-							<b>FIRE</b>
+							<b>Fire</b>
 						</div>
 						<div class="card-body">
 							<table class="table table-bordered">
